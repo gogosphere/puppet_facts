@@ -5,13 +5,19 @@ package main
 // TODO: maybe kickout reuseable funtions or make them reusable.
 
 import (
+<<<<<<< HEAD
 	"bytes"
+=======
+>>>>>>> parent of a84f20f... dicking around with the puppet puller
 	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
+<<<<<<< HEAD
 	"log"
 	"net/http"
+=======
+>>>>>>> parent of a84f20f... dicking around with the puppet puller
 	"os"
 	"strings"
 )
@@ -34,6 +40,7 @@ func main() {
 	fmt.Println(cmdbase[len(cmdbase)-1])
 	//hostFactValue()
 	//hostList()
+<<<<<<< HEAD
 
 	var jsonByte []byte
 
@@ -60,13 +67,23 @@ func main() {
 
 func hostList(pContents []byte) {
 	/*
+=======
+}
+
+func hostList() {
+>>>>>>> parent of a84f20f... dicking around with the puppet puller
 	file, e := ioutil.ReadFile("/Users/whancock/Dropbox/nodesoutput.txt")
 	if e != nil {
 		fmt.Println("ioutil read bork")
 	}
+<<<<<<< HEAD
 	*/
 	var r []Details
 	json.Unmarshal(pContents, &r)
+=======
+	var r []Details
+	json.Unmarshal(file, &r)
+>>>>>>> parent of a84f20f... dicking around with the puppet puller
 	for k, v := range r {
 		fmt.Println(k, v.Name)
 	}
