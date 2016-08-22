@@ -5,10 +5,13 @@ package main
 // TODO: maybe kickout reuseable funtions or make them reusable.
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
+	"net/http"
 	"os"
 	"strings"
 )
@@ -31,15 +34,39 @@ func main() {
 	fmt.Println(cmdbase[len(cmdbase)-1])
 	//hostFactValue()
 	//hostList()
+
+	var jsonByte []byte
+
+	url := "http://puppetdb.homeawaycorp.com/nodes"
+
+	req, err := http.NewRequest("GET", url, bytes.NewBuffer(jsonByte))
+	req.Header.Set("Content-Type", "application/json")
+	if err != nil {
+		log.Fatal("Die: ", err)
+	}
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal("Die: ", err)
+	}
+
+	defer resp.Body.Close()
+
+	body, _ := ioutil.ReadAll(resp.Body)
+	hostList(body)
+
 }
 
-func hostList() {
+func hostList(pContents []byte) {
+	/*
 	file, e := ioutil.ReadFile("/Users/whancock/Dropbox/nodesoutput.txt")
 	if e != nil {
 		fmt.Println("ioutil read bork")
 	}
+	*/
 	var r []Details
-	json.Unmarshal(file, &r)
+	json.Unmarshal(pContents, &r)
 	for k, v := range r {
 		fmt.Println(k, v.Name)
 	}
