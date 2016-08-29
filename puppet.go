@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-type Details struct {
+type details struct {
 	Certmap Certmap `json:"certname"`
 	Name    string  `json:"name,omitempty"`
 	Value   string  `json:"value,omitempty"`
@@ -74,7 +74,7 @@ func fetchPuppetInfo(url string, finder map[string][]string) map[string][]string
 
 func hostList(pContents []byte, finder map[string][]string) map[string][]string {
 
-	var r []Details
+	var r []details
 	json.Unmarshal(pContents, &r)
 
 	for _, v := range r {
