@@ -23,11 +23,13 @@ func main() {
 	cmdbase := strings.Split(os.Args[0], "/")
 	fmt.Println(cmdbase[len(cmdbase)-1])
 	*/
-	base := "http://aspdo046.aus1.homeaway.live:44880/v2"
+	//base := "http://aspdo046.aus1.homeaway.live:44880/v2"
+	base := "http://localhost:8080/"
 
 	endpoint := []string{"osfamily", "is_virtual"}
 	for _, v := range endpoint {
-		url := base + "/facts/" + v
+		//url := base + "/facts/" + v
+		url := base + v + ".json"
 		fmt.Println(url)
 		fetchPuppetInfo(url)
 	}
