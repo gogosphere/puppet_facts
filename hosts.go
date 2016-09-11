@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 type details struct {
@@ -15,27 +16,26 @@ type details struct {
 	Value    string `json:"value,omitempty"`
 }
 
-//var results map[string][]string
+//var results map[string][]string``
 
 func main() {
 
-	/* get root command for other dumb shit
-	cmdbase := strings.Split(os.Args[0], "/")
-	fmt.Println(cmdbase[len(cmdbase)-1])
-	*/
-	//base := "http://aspdo046.aus1.homeaway.live:44880/v2"
-	base := "http://localhost:8080/"
+	//base := "http://localhost:8180/v2/nodes/"
+	base := "http://aspdo046.aus1.homeaway.live:44880/v2/nodes/"
+	var hosts []string
+	hosts = fetchPuppetInfo(base)
+	i := 1
+	for _, v := range hosts {
+		//v = "qb004.wvrgroup.internal"
+		url := base + v + "/facts"
+		i++
 
-	endpoint := []string{"osfamily", "is_virtual"}
-	for _, v := range endpoint {
-		//url := base + "/facts/" + v
-		url := base + v + ".json"
-		fmt.Println(url)
-		fetchPuppetInfo(url)
+		time.Sleep(10 * time.Millisecond)
+		go fetchPuppetInfo(url)
 	}
 }
 
-func fetchPuppetInfo(url string) {
+func fetchPuppetInfo(url string) []string {
 	var jsonByte []byte
 	req, err := http.NewRequest("GET", url, bytes.NewBuffer(jsonByte))
 	req.Header.Set("Content-Type", "application/json")
@@ -50,19 +50,20 @@ func fetchPuppetInfo(url string) {
 	defer resp.Body.Close()
 
 	body, _ := ioutil.ReadAll(resp.Body)
-	hostList(body)
 
+	hosts := hostList(body)
+	return hosts
 }
 
-func hostList(pContents []byte) {
+func hostList(pContents []byte) []string {
 
+	var H []string
 	var r []details
 	json.Unmarshal(pContents, &r)
 
-	counts := make(map[string]int)
 	for _, v := range r {
-		counts[v.Value]++
+		H = append(H, v.Certname, v.Name, v.Value)
+		fmt.Println(v.Certname, v.Name, v.Value)
 	}
-	fmt.Println(counts)
-
+	return H
 }
