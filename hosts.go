@@ -21,7 +21,7 @@ type details struct {
 func main() {
 
 	//base := "http://localhost:8180/v2/nodes/"
-	base := "http://aspdo046.aus1.homeaway.live:44880/v2/nodes/"
+	
 	var hosts []string
 	hosts = fetchPuppetInfo(base)
 	i := 1
